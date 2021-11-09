@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // import PropTypes from "prop-types";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
@@ -9,6 +9,7 @@ import Typography from "@mui/material/Typography";
 // import { useSpring, animated } from "react-spring/web.cjs";
 import { Fade } from "@mui/material";
 import TextField from "@mui/material/TextField";
+import useAuth from "../../../Hooks/useAuth";
 
 // const Fade = React.forwardRef(function Fade(props, ref) {
 //   const { in: open, children, onEnter, onExited, ...other } = props;
@@ -55,18 +56,54 @@ const style = {
 
 const BookingModal = ({
   date,
+  setBookingSuccess,
   booking,
   openBooking,
   setOpenBooking,
   handleBookingClose,
   handleBookingOpen,
 }) => {
+  const { user } = useAuth();
+  const initialInfo = {
+    patientName: user.displayName,
+    email: user.email,
+    phone: "",
+  };
+  const [bookingInfo, setBookingInfo] = useState(initialInfo);
   const handleConfirmBooking = (e) => {
-    alert("Submitting");
     //   collect data
+    const appointment = {
+      ...bookingInfo,
+      time: booking.time,
+      serviceName: booking.name,
+      date: date.toLocaleDateString(),
+    };
+    // send to the server
+    fetch("http://localhost:7000/appointments", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(appointment),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.insertedId) {
+          handleBookingClose();
+          setBookingSuccess(true);
+        }
+      });
     //   send to the form
-    handleBookingClose();
+    // handleBookingClose();
     e.preventDefault();
+  };
+
+  const handleOnBlur = (e) => {
+    const field = e.target.name;
+    const value = e.target.value;
+    const newInfo = { ...bookingInfo };
+    newInfo[field] = value;
+    setBookingInfo(newInfo);
   };
   return (
     <Modal
@@ -103,20 +140,26 @@ const BookingModal = ({
               label="Your Name"
               sx={{ width: "90%", mt: 1 }}
               id="outlined-size-small"
-              defaultValue=""
+              name="patientName"
+              onBlur={handleOnBlur}
+              defaultValue={user.displayName}
               size="small"
             />
             <TextField
               label="Your Email"
               sx={{ width: "90%", mt: 1 }}
               id="outlined-size-small"
-              defaultValue=""
+              name="email"
+              onBlur={handleOnBlur}
+              defaultValue={user.email}
               size="small"
             />
             <TextField
               label="Phone Number"
               sx={{ width: "90%", mt: 1 }}
               id="outlined-size-small"
+              name="phone"
+              onBlur={handleOnBlur}
               defaultValue=""
               size="small"
             />

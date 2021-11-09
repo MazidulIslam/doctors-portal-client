@@ -8,7 +8,7 @@ const Booking = (props) => {
   const handleBookingOpen = () => setOpenBooking(true);
   const handleBookingClose = () => setOpenBooking(false);
   const { name, time, space } = props.booking;
-  const { date } = props;
+  const { date, setBookingSuccess } = props;
   return (
     <>
       <Grid item xs={12} sm={6} md={4}>
@@ -54,6 +54,7 @@ const Booking = (props) => {
         setOpenBooking={setOpenBooking}
         handleBookingOpen={handleBookingOpen}
         handleBookingClose={handleBookingClose}
+        setBookingSuccess={setBookingSuccess}
       ></BookingModal>
     </>
   );
