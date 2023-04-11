@@ -1,19 +1,21 @@
-import React, { useEffect, useState } from "react";
-import useAuth from "./../../../Hooks/useAuth";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
+import React, { useEffect, useState } from 'react';
+import useAuth from './../../../Hooks/useAuth';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import { baseURL } from '../../../BaseURL';
 
 const Appointments = ({ date }) => {
   const { user, token } = useAuth();
   const [appointments, setAppointments] = useState();
 
   useEffect(() => {
-    const url = `http://localhost:7000/appointments?email=${user?.email}&date=${date}`;
+    const url = `${baseURL}:7000/appointments?email=${user?.email}&date=${date}`;
+    // const url = `http://localhost:7000/appointments?email=${user?.email}&date=${date}`;
     fetch(url, {
       headers: {
         authorization: `Bearer ${token}`,
@@ -39,7 +41,7 @@ const Appointments = ({ date }) => {
             {appointments?.map((appointment) => (
               <TableRow
                 key={appointment._id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
                   {/* {appointment.email} */}

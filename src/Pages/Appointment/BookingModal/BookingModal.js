@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 // import PropTypes from "prop-types";
-import Backdrop from "@mui/material/Backdrop";
-import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import Backdrop from '@mui/material/Backdrop';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 // web.cjs is required for IE11 support
 // import { useSpring, animated } from "react-spring/web.cjs";
-import { Fade } from "@mui/material";
-import TextField from "@mui/material/TextField";
-import useAuth from "../../../Hooks/useAuth";
+import { Fade } from '@mui/material';
+import TextField from '@mui/material/TextField';
+import useAuth from '../../../Hooks/useAuth';
+import { baseURL } from '../../../BaseURL';
 
 // const Fade = React.forwardRef(function Fade(props, ref) {
 //   const { in: open, children, onEnter, onExited, ...other } = props;
@@ -43,13 +44,13 @@ import useAuth from "../../../Hooks/useAuth";
 // };
 
 const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
   width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
   boxShadow: 24,
   p: 4,
 };
@@ -67,7 +68,7 @@ const BookingModal = ({
   const initialInfo = {
     patientName: user.displayName,
     email: user.email,
-    phone: "",
+    phone: '',
   };
   const [bookingInfo, setBookingInfo] = useState(initialInfo);
   const handleConfirmBooking = (e) => {
@@ -79,10 +80,11 @@ const BookingModal = ({
       date: date.toLocaleDateString(),
     };
     // send to the server
-    fetch("http://localhost:7000/appointments", {
-      method: "POST",
+    fetch(`${baseURL}:7000/appointments`, {
+      // fetch("http://localhost:7000/appointments", {
+      method: 'POST',
       headers: {
-        "content-type": "application/json",
+        'content-type': 'application/json',
       },
       body: JSON.stringify(appointment),
     })
@@ -120,7 +122,7 @@ const BookingModal = ({
       <Fade in={openBooking}>
         <Box sx={style}>
           <Typography
-            sx={{ color: "info.main", fontWeight: 600, mb: 2 }}
+            sx={{ color: 'info.main', fontWeight: 600, mb: 2 }}
             id="spring-modal-title"
             variant="h4"
             // component="h1
@@ -131,14 +133,14 @@ const BookingModal = ({
             <TextField
               //   label="Size"
               disabled
-              sx={{ width: "90%" }}
+              sx={{ width: '90%' }}
               id="outlined-size-small"
               defaultValue={booking.time}
               size="small"
             />
             <TextField
               label="Your Name"
-              sx={{ width: "90%", mt: 1 }}
+              sx={{ width: '90%', mt: 1 }}
               id="outlined-size-small"
               name="patientName"
               onBlur={handleOnBlur}
@@ -147,7 +149,7 @@ const BookingModal = ({
             />
             <TextField
               label="Your Email"
-              sx={{ width: "90%", mt: 1 }}
+              sx={{ width: '90%', mt: 1 }}
               id="outlined-size-small"
               name="email"
               onBlur={handleOnBlur}
@@ -156,7 +158,7 @@ const BookingModal = ({
             />
             <TextField
               label="Phone Number"
-              sx={{ width: "90%", mt: 1 }}
+              sx={{ width: '90%', mt: 1 }}
               id="outlined-size-small"
               name="phone"
               onBlur={handleOnBlur}
@@ -166,7 +168,7 @@ const BookingModal = ({
             <TextField
               disabled
               label="Today"
-              sx={{ width: "90%", mt: 1 }}
+              sx={{ width: '90%', mt: 1 }}
               id="outlined-size-small"
               defaultValue={date.toDateString()}
               size="small"
